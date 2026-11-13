@@ -1,4 +1,4 @@
-# Breeze & Beam
+<img width="1276" height="1440" alt="image" src="https://github.com/user-attachments/assets/47d027c5-1b81-4d60-a1c0-c978ccc6919a" /># Breeze & Beam
 ### Renewable Energy Forecasting and Management System
 
 Breeze & Beam is a renewable energy forecasting and simulation project that combines solar, wind, and hydroelectric resources. It uses machine learning to forecast solar and wind generation, presents energy information through an interactive dashboard, and demonstrates how hydroelectric storage can support changing electricity demand.
@@ -165,9 +165,9 @@ Features include:
 - Navigation to the registration page.
 - Access to the dashboard appropriate to the account’s role.
 
-<!-- Add the login screenshot from document section 2.2.1 here. -->
 
-![Breeze & Beam Login Page](images/login-page.png)
+<img width="1276" height="1440" alt="image" src="https://github.com/user-attachments/assets/08d1e326-510f-4f4f-9a63-bc93811fc920" />
+
 
 ### Registration Page
 
@@ -182,9 +182,8 @@ The application validates the supplied details and provides feedback for invalid
 
 A **Cancel** button returns to login without creating an account.
 
-<!-- Add the registration screenshot from document section 2.2.2 here. -->
+<img width="539" height="562" alt="image" src="https://github.com/user-attachments/assets/3cc09da3-4818-4bad-9ee8-44bb8c01d7d1" />
 
-![Breeze & Beam Registration Page](images/register-page.png)
 
 ### Administrator Dashboard
 
@@ -199,9 +198,8 @@ Administrators can:
 
 These controls support interaction with the simulated pumping and generation processes.
 
-<!-- Add the administrator screenshot from document section 2.2.3 here. -->
+<img width="1276" height="1440" alt="image" src="https://github.com/user-attachments/assets/ab0d4ccc-259a-4299-81a5-03aaec808aa6" />
 
-![Breeze & Beam Administrator Dashboard](images/admin-dashboard.png)
 
 ### User Dashboard
 
@@ -214,10 +212,9 @@ Ordinary users can:
 - Monitor the displayed system state.
 
 Manual floodgate and pump controls are hidden from the ordinary-user interface.
+<img width="1271" height="1440" alt="image" src="https://github.com/user-attachments/assets/d7f6ee99-72db-4592-86e7-c91416f47577" />
 
-<!-- Add the user dashboard screenshot from document section 2.2.4 here. -->
 
-![Breeze & Beam User Dashboard](images/user-dashboard.png)
 
 ### Role Comparison
 
@@ -240,9 +237,11 @@ The solar simulation page presents:
 
 This view supports inspection of solar generation patterns and differences between predictions and recorded values.
 
-<!-- Add the solar simulation screenshot from document section 2.3.2 here. -->
+<img width="1253" height="125" alt="image" src="https://github.com/user-attachments/assets/e74c2ee9-5f7b-450c-96bf-15a2b0abef14" />
+<img width="1380" height="675" alt="image" src="https://github.com/user-attachments/assets/60ba8baa-df78-43a4-8fc2-92033577fd0f" />
+<img width="1378" height="513" alt="image" src="https://github.com/user-attachments/assets/7172612c-f86a-4640-a6d6-a1bc304e229d" />
 
-![Breeze & Beam Solar Simulation](images/solar-simulation.png)
+
 
 ### Wind Simulation Page
 
@@ -254,10 +253,11 @@ The wind simulation page provides:
 - Navigation back to the solar simulation page.
 
 This view supports inspection of wind generation patterns and differences between predictions and recorded values.
+<img width="1253" height="125" alt="image" src="https://github.com/user-attachments/assets/c5f05dc3-554c-4a25-8a58-3b7f1c94fa11" />
+<img width="1253" height="611" alt="image" src="https://github.com/user-attachments/assets/1693fade-5083-4d38-87b0-df9ba9da64ce" />
+<img width="1253" height="467" alt="image" src="https://github.com/user-attachments/assets/eebea739-72e5-4eb7-a952-45d2ac8ed9a2" />
 
-<!-- Add the wind simulation screenshot from document section 2.3.3 here. -->
 
-![Breeze & Beam Wind Simulation](images/wind-simulation.png)
 
 ## Application Workflow
 
