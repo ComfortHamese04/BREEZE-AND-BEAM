@@ -1,4 +1,5 @@
-<img width="1276" height="1440" alt="image" src="https://github.com/user-attachments/assets/47d027c5-1b81-4d60-a1c0-c978ccc6919a" /># Breeze & Beam
+
+# Breeze & Beam
 ### Renewable Energy Forecasting and Management System
 
 Breeze & Beam is a renewable energy forecasting and simulation project that combines solar, wind, and hydroelectric resources. It uses machine learning to forecast solar and wind generation, presents energy information through an interactive dashboard, and demonstrates how hydroelectric storage can support changing electricity demand.
@@ -166,7 +167,7 @@ Features include:
 - Access to the dashboard appropriate to the account’s role.
 
 
-<img width="1276" height="1440" alt="image" src="https://github.com/user-attachments/assets/08d1e326-510f-4f4f-9a63-bc93811fc920" />
+<img width="486" height="538" alt="image" src="https://github.com/user-attachments/assets/11759f6e-2524-4028-8a92-02f0f237f4f7" />
 
 
 ### Registration Page
