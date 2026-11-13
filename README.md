@@ -1,236 +1,334 @@
 # Breeze & Beam
+### Renewable Energy Forecasting and Management System
 
-**Renewable energy forecasting, monitoring, and hybrid energy simulation.**
+Breeze & Beam is a renewable energy forecasting and simulation project that combines solar, wind, and hydroelectric resources. It uses machine learning to forecast solar and wind generation, presents energy information through an interactive dashboard, and demonstrates how hydroelectric storage can support changing electricity demand.
 
-Breeze & Beam combines solar and wind generation forecasts with a simulated hydroelectric storage system to explore how renewable energy sources can work together to meet electricity demand. The project brings together machine learning in R, an interactive dashboard, role-based application features, and automated testing.
+The project brings together data preparation, predictive modelling, visualisation, account management, administrator controls, and automated testing.
 
-## Application preview
+## Project Overview
 
-> **Add your preferred dashboard screenshot here.**
+Breeze & Beam uses Stellenbosch in South Africa’s Western Cape as the setting for a hybrid renewable energy simulation.
 
-<!-- Upload your chosen screenshot and uncomment this line after updating the path:
-![Breeze & Beam dashboard](images/dashboard.png)
--->
+Solar and wind generation depend on changing weather conditions. The system explores how these resources can work together with hydroelectric storage to balance electricity generation and demand.
 
-## Project overview
+The solution consists of three main components:
 
-The project uses Stellenbosch in South Africa's Western Cape as the setting for a hybrid renewable-energy scenario. Its purpose is to explore a more sustainable energy supply by combining solar, wind, and hydroelectric resources, supported by forecasts and a monitoring interface.
+1. **Prediction models:** Separate XGBoost models for forecasting solar and wind generation.
+2. **Monitoring dashboard:** An interface for viewing generation information, with different functionality for administrators and ordinary users.
+3. **Simulation views:** Graphs and tables comparing predicted and actual generation throughout the year.
 
-Solar and wind generation vary with weather conditions. Breeze & Beam uses historical weather and generation data to forecast their output and support decisions about when a simulated hydroelectric system should store surplus power or generate power to cover a shortfall.
+## Problem Statement
 
-The system has three main components:
+Variable weather conditions make it difficult to rely on a single renewable energy source. Solar generation changes with sunlight, while wind generation depends on wind conditions.
 
-1. **Forecasting models:** separate XGBoost models for solar and wind generation.
-2. **Monitoring and control dashboard:** generation information, account access, and administrator controls for the simulated hydro system.
-3. **Simulation views:** graphs and tables comparing predicted and actual solar and wind generation over the year.
+Breeze & Beam explores a combined approach in which surplus renewable generation supports water storage, and stored water supports electricity generation when solar and wind output are insufficient.
 
-## Problem and objectives
+## Project Objectives
 
-The project addresses the challenge of coordinating variable renewable generation with electricity demand. A single renewable source may not consistently meet demand, so complementary sources and storage are considered together.
+- Prepare historical weather and generation data for modelling.
+- Develop separate forecasting models for solar and wind generation.
+- Compare predicted generation with recorded values.
+- Visualise generation trends through graphs and tables.
+- Support simulated hydroelectric pumping and generation decisions.
+- Provide separate administrator and user dashboard experiences.
+- Implement account registration and login.
+- Test account-management functionality using automated unit tests.
 
-The objectives are to:
+## Hybrid Energy System
 
-- Forecast solar and wind generation using historical weather and generation data.
-- Compare predictions with recorded generation values.
-- Present generation trends through graphs and tables.
-- Use generation and demand information to support hydro charging and discharging decisions.
-- Give administrators access to simulation controls while providing ordinary users with monitoring access.
-- Test account-management behaviour with automated unit tests.
-
-This is a software simulation and decision-support prototype. The documented design does not establish a commissioned energy installation or verified electricity supply to Stellenbosch.
-
-## Hybrid energy design
-
-| Component | Scenario described in the project | Role |
+| Component | Simulated Capacity | Purpose |
 | --- | --- | --- |
-| Solar farm | Simulated 40 MW installation | Provides generation dependent on solar conditions |
-| Wind farm | Simulated 40 MW installation | Provides generation dependent on wind conditions |
-| Hydroelectric system | Simulated 50–100 MW installation with an upper reservoir | Stores surplus energy through pumping and generates during shortfalls |
+| Solar farm | 40 MW | Generate electricity from solar resources |
+| Wind farm | 40 MW | Generate electricity from wind resources |
+| Hydroelectric system | 50–100 MW | Support storage and generation during supply fluctuations |
 
-These capacities are scenario assumptions from the project documentation. Physical feasibility, storage duration, and real-world energy delivery require separate engineering validation.
+These capacities represent the project’s simulation assumptions rather than a commissioned energy installation.
 
-### Hydro operating modes
+### Charging Mode
 
-**Charging or pumping mode:** When solar and wind output exceed current demand, part of the surplus is used to pump water into the upper reservoir.
+When solar and wind generation exceed demand, part of the surplus electricity is used to pump water into an upper reservoir.
 
-**Discharging or generation mode:** When solar and wind output fall short of demand, stored water is released through the turbine to generate additional power, provided sufficient water is available.
+### Discharging Mode
 
-This provides the central relationship between generation forecasts, demand, storage, and system control.
+When solar and wind generation are insufficient, stored water is released through a turbine to generate additional electricity, provided sufficient water is available.
 
-## Data workflow
+## Data Preparation
 
-### 1. Data inputs and preparation
+### Data Inputs
 
-The forecasting workflow reads preprocessed CSV files containing historical weather information and generation-related data. The documented weather inputs include:
+The forecasting workflow uses preprocessed CSV files containing historical weather and generation-related information.
+
+The documented weather variables include:
 
 - Solar irradiance.
 - Wind speed.
 - Temperature.
 - Humidity.
 
-The R ingestion example locates CSV files in a directory, uses an `-END HEADER-` marker to skip metadata, reads the files with `read_csv()`, and combines them with `bind_rows()`.
+### Data Loading and Combination
 
-This produces a combined dataset for selecting predictors, constructing model inputs, and separating training and evaluation periods. The supplied document begins with preprocessed data; it does not specify the earlier missing-value, duplicate, or outlier treatments, nor does it name the exact meteorological provider.
+The R workflow reads multiple CSV files from a directory and combines them into a dataset for analysis.
 
-### 2. Feature selection
+The process includes:
 
-Relevant weather variables were selected as predictors for solar and wind generation. Solar irradiance, wind speed, and humidity are specifically identified in the model-training description, with temperature also listed among the available inputs.
+1. Identifying the CSV files.
+2. Locating the `-END HEADER-` marker to skip file metadata.
+3. Reading the data using `read_csv()`.
+4. Combining the files using `bind_rows()`.
+5. Preparing predictors and target values for model training.
 
-The purpose is to connect environmental conditions to expected renewable generation. The exact feature set for each model should be documented alongside its executable training script.
+The implementation document begins with preprocessed files. Earlier missing-value, duplicate, and outlier treatments are not specified.
 
-### 3. Time-based training and testing
+### Feature Selection
 
-The documented workflow separates the data chronologically:
+Weather variables were selected to support the prediction of solar and wind generation. The training description identifies solar irradiance, wind speed, and humidity as relevant predictors, with temperature also available in the input data.
+
+### Training and Testing Split
+
+The data was divided chronologically:
 
 | Dataset | Period | Purpose |
 | --- | --- | --- |
-| Training data | Up to and including 2023 | Fit the forecasting models |
-| Test data | 2024 | Compare predictions with held-out recorded values |
+| Training data | Up to and including 2023 | Train the forecasting models |
+| Test data | 2024 | Evaluate predictions against recorded values |
 
-Using a later period for testing evaluates how the models behave on data beyond their training period.
+This approach evaluates the models on a later period than the data used for training.
 
-## Machine learning models
+## Machine Learning
 
-Breeze & Beam uses **XGBoost regression**, with separate models for solar and wind generation. The models predict numeric output values rather than eligibility labels or customer categories.
+### XGBoost Regression
 
-The documented R training example converts predictors into a matrix, wraps them in `xgb.DMatrix`, and fits a model with `xgb.train()`.
+Separate XGBoost regression models were developed for solar and wind generation.
 
-| Parameter | Documented setting |
+The training workflow involved:
+
+1. Selecting the relevant predictors.
+2. Converting the training features into a matrix.
+3. Creating an `xgb.DMatrix` containing predictors and target values.
+4. Training the model using `xgb.train()`.
+5. Generating predictions for the test period.
+6. Exporting predictions alongside recorded values.
+
+### Documented Model Configuration
+
+| Parameter | Value |
 | --- | --- |
 | Objective | `reg:squarederror` |
 | Evaluation metric | `rmse` |
 | Maximum tree depth | `6` |
-| Learning rate (`eta`) | `0.1` |
+| Learning rate | `0.1` |
 | Boosting rounds | `100` |
 
-The report describes hyperparameter tuning, but it provides one configuration rather than a search history or comparative tuning results.
+The implementation report describes model tuning but does not include a complete tuning history or numerical comparison between configurations.
 
-### Predictions and output files
+### Prediction Outputs
 
-Predictions were generated for the 2024 test data and exported to CSV. The documented output structure contains:
+Separate CSV outputs were produced for solar and wind.
 
-| Field | Meaning |
+| Field | Description |
 | --- | --- |
-| Date / timestamp | Observation time |
+| Date / timestamp | Time associated with the observation |
 | Actual | Recorded target value |
-| Predicted | Corresponding model prediction |
+| Predicted | Model prediction |
 
-Separate output files are described for solar and wind. The report states that the CSVs contain hourly records, which feed the dashboard workflow. The simulation pages present daily generation comparisons across the year.
+The documented CSVs contain hourly records, while the simulation views present daily comparisons across the year.
 
-The document refers both to generation predictions and to applying source-specific formulas to CSV values. The exact forecast target, conversion formulas, aggregation rules, and units should be checked against the source code before interpreting the outputs as physical energy totals. MW expresses power; energy over a period would normally be expressed in MWh.
+The report also refers to source-specific generation formulas. The exact conversion formulas and units should be checked against the implementation when interpreting the outputs.
 
-## Dashboard features
+## Application Features
 
-### Login and registration
+<!--
+SCREENSHOT INSTRUCTIONS
 
-The application provides account-based access with:
+Create an images folder in the root of your repository.
+Upload your screenshots using the filenames below, or update each image
+path to match your chosen filename and extension.
 
-- Email and password login.
-- A Remember Me option that remembers the email address.
-- Registration using a username, email, password, and password confirmation.
-- Input validation and feedback for invalid registration details.
-- Database-backed account creation after successful validation.
-- Navigation between login, registration, and the main dashboard.
+images/login-page.png
+images/register-page.png
+images/admin-dashboard.png
+images/user-dashboard.png
+images/solar-simulation.png
+images/wind-simulation.png
 
-### Administrator and user views
+The image links below will display after the matching files are uploaded.
+-->
 
-| Capability | Administrator | User |
+### Login Page
+
+The login page allows existing users to access the application using their email address and password.
+
+Features include:
+
+- Email and password inputs.
+- A **Remember Me** option that remembers the email address.
+- Navigation to the registration page.
+- Access to the dashboard appropriate to the account’s role.
+
+<!-- Add the login screenshot from document section 2.2.1 here. -->
+
+![Breeze & Beam Login Page](images/login-page.png)
+
+### Registration Page
+
+New users can create an account by entering:
+
+- Username.
+- Email address.
+- Password.
+- Password confirmation.
+
+The application validates the supplied details and provides feedback for invalid inputs. After successful validation, the account information is stored in the database and the user returns to the login page.
+
+A **Cancel** button returns to login without creating an account.
+
+<!-- Add the registration screenshot from document section 2.2.2 here. -->
+
+![Breeze & Beam Registration Page](images/register-page.png)
+
+### Administrator Dashboard
+
+The administrator dashboard provides generation information and access to the simulated hydroelectric system’s manual controls.
+
+Administrators can:
+
+- View generation information and graphs.
+- Monitor the displayed system state.
+- Access manual floodgate controls.
+- Access manual pump controls.
+
+These controls support interaction with the simulated pumping and generation processes.
+
+<!-- Add the administrator screenshot from document section 2.2.3 here. -->
+
+![Breeze & Beam Administrator Dashboard](images/admin-dashboard.png)
+
+### User Dashboard
+
+The user dashboard provides access to the same generation information and graphs for monitoring.
+
+Ordinary users can:
+
+- View generation information.
+- Inspect dashboard graphs.
+- Monitor the displayed system state.
+
+Manual floodgate and pump controls are hidden from the ordinary-user interface.
+
+<!-- Add the user dashboard screenshot from document section 2.2.4 here. -->
+
+![Breeze & Beam User Dashboard](images/user-dashboard.png)
+
+### Role Comparison
+
+| Feature | Administrator | User |
 | --- | --- | --- |
-| View generation information and graphs | Yes | Yes |
-| Monitor the displayed system state | Yes | Yes |
+| View generation information | Yes | Yes |
+| View dashboard graphs | Yes | Yes |
+| Monitor displayed system state | Yes | Yes |
 | Access manual floodgate controls | Yes | No |
 | Access manual pump controls | Yes | No |
 
-The documented user interface hides the manual controls from ordinary users. Server-side or application-layer authorisation would need to be verified in the source code separately.
+### Solar Simulation Page
 
-### Generation simulation views
+The solar simulation page presents:
 
-Solar and wind have separate pages with:
+- A line graph comparing predicted and actual daily generation.
+- A table containing the corresponding values.
+- Generation comparisons across the year.
+- Navigation to the wind simulation page.
 
-- Line graphs comparing predicted and actual daily generation across the year.
-- Tables containing predicted and actual values.
-- Navigation between the solar and wind views.
+This view supports inspection of solar generation patterns and differences between predictions and recorded values.
 
-These views make it easier to inspect seasonal patterns and differences between forecasts and recorded values.
+<!-- Add the solar simulation screenshot from document section 2.3.2 here. -->
 
-> **Add your preferred solar and wind simulation screenshots here.**
+![Breeze & Beam Solar Simulation](images/solar-simulation.png)
 
-<!--
-![Solar generation comparison](images/solar-simulation.png)
-![Wind generation comparison](images/wind-simulation.png)
--->
+### Wind Simulation Page
 
-## Automated testing
+The wind simulation page provides:
 
-The dashboard was developed using Visual Studio. The documentation includes C# unit-test examples using **xUnit** to exercise the `UserManagement` class, with simulated database data supplied through test helpers and mocked database access.
+- A line graph comparing predicted and actual daily wind generation.
+- A table containing the corresponding values.
+- Generation comparisons across the year.
+- Navigation back to the solar simulation page.
 
-| Area | Documented testing focus |
+This view supports inspection of wind generation patterns and differences between predictions and recorded values.
+
+<!-- Add the wind simulation screenshot from document section 2.3.3 here. -->
+
+![Breeze & Beam Wind Simulation](images/wind-simulation.png)
+
+## Application Workflow
+
+1. Open the login page.
+2. Register an account if required.
+3. Sign in using an email address and password.
+4. Access the dashboard appropriate to the account’s role.
+5. View generation information and graphs.
+6. Use administrator controls where available.
+7. Inspect solar and wind simulation views to compare predicted and recorded generation.
+
+## Automated Testing
+
+The dashboard was developed in Visual Studio. Automated tests were written using **xUnit** to exercise the `UserManagement` class.
+
+Mocked database access and helper methods were used to provide test data without depending on a live database.
+
+| Method | Testing Focus |
 | --- | --- |
-| `Login` | Valid credentials, invalid passwords, and a nonexistent email address |
+| `Login` | Valid credentials, invalid passwords, and nonexistent email addresses |
 | `CheckAccountExists` | Account-existence checks |
 | `CheckEmailFormat` | Email-format validation |
-| `RegisterNewUser` | New-user registration behaviour |
+| `RegisterNewUser` | Account-registration behaviour |
 
-The login examples follow the Arrange–Act–Assert pattern: prepare credentials and mocked responses, call the method, and assert the expected result. This allows account logic to be exercised independently of a live database.
+The login tests follow the Arrange–Act–Assert pattern:
 
-The supplied report contains test examples, but it does not provide a complete test-run summary, pass count, or coverage percentage.
+1. **Arrange:** Prepare test inputs and mocked database responses.
+2. **Act:** Call the method being tested.
+3. **Assert:** Check whether the returned result matches the expected behaviour.
 
-## Results and project outcomes
+The documentation includes test examples but does not provide a complete pass count or coverage percentage.
+
+## Technologies Used
+
+| Technology | Purpose |
+| --- | --- |
+| R | Data preparation, model training, predictions, and CSV export |
+| XGBoost | Solar and wind regression models |
+| `read_csv()` | Reading CSV data |
+| `bind_rows()` | Combining datasets |
+| C# | Account-management logic and unit-test examples |
+| Visual Studio | Application development |
+| xUnit | Automated testing |
+| CSV | Historical data and prediction output exchange |
+| Database-backed storage | Account registration and lookup |
+
+## Results and Outcomes
 
 The documented implementation demonstrates:
 
-- Separate XGBoost forecasting workflows for solar and wind.
-- A time-based evaluation design using 2024 as the test period.
-- CSV outputs containing predictions and recorded values for comparison.
+- Separate forecasting workflows for solar and wind generation.
+- A chronological training and testing approach.
+- Prediction outputs containing recorded and predicted values.
 - Integration of prediction data into dashboard and simulation views.
-- Administrator and ordinary-user interfaces with different control access.
-- A simulated hydro storage design with pumping and generation modes.
+- Separate administrator and ordinary-user interfaces.
+- Manual hydro controls within the administrator interface.
+- A simulated pumping and generation design.
 - Automated account-management test examples.
 
-The report does not provide numerical RMSE, MAE, or R² scores. Model accuracy therefore cannot be quantified from this document alone. It also does not measure real-world emissions reductions, energy savings, operational uptime, or the ability to meet a town's actual demand.
+The project demonstrates how forecasting, visualisation, application development, and energy-system simulation can be combined into one prototype.
 
-The main demonstrated outcome is a connected prototype that combines forecasting, visualisation, user management, and energy-system simulation.
+Numerical RMSE, MAE, and R² results are not included in the supplied implementation report. Real-world energy savings, emissions reductions, and operational performance have also not been measured in that document.
 
-## Technologies
+## Future Improvements
 
-| Technology | Use |
-| --- | --- |
-| R | Data ingestion, model preparation, training, predictions, and CSV export |
-| XGBoost | Solar and wind regression models |
-| `read_csv()` and `bind_rows()` | Reading and combining CSV data in the R examples |
-| C# | Account-management logic and unit-test examples |
-| Visual Studio | Dashboard development environment |
-| xUnit | Automated tests |
-| CSV | Exchange of historical inputs and prediction outputs |
-| Database-backed account storage | Registration and account lookup; database engine not specified in the supplied report |
-
-## Running the project
-
-Exact setup commands depend on the repository's solution file, target framework, R scripts, database configuration, and data paths. These are not included in the supplied implementation report.
-
-The documented execution sequence is:
-
-1. Prepare the historical weather and generation CSV files.
-2. Run the R ingestion and preparation workflow.
-3. Fit the separate solar and wind XGBoost models using the training period.
-4. Generate predictions for the 2024 test period and export the results.
-5. Configure the dashboard to read the required outputs and access its account database.
-6. Launch the application and inspect the generation and simulation views.
-7. Run the account-management unit tests in the development environment.
-
-Add repository-specific installation and launch commands once the source files and configuration requirements are available.
-
-## Future improvements
-
-- Publish the complete data-preparation process, data sources, schemas, and units.
-- Report RMSE, MAE, and R² separately for solar and wind, with comparisons against simple forecasting baselines.
-- Evaluate performance across seasons and different forecast horizons.
-- Document the relationship between weather predictions, generation formulas, and displayed output.
-- Validate reservoir capacity, hydraulic head, efficiency, and power-to-energy calculations.
-- Verify access controls beyond hiding buttons in the interface.
-- Extend tests to generation calculations, storage-state transitions, CSV loading, and role permissions.
-- Add reproducible setup instructions, dependency versions, and a complete test-run summary.
-
-## Documentation basis
-
-This README is based on the supplied implementation and testing report. It describes the documented system and distinguishes implemented examples from measurements or setup details that still require the source repository.
+- Document the complete data-cleaning process and original data sources.
+- Report separate forecasting metrics for solar and wind.
+- Compare XGBoost against simple forecasting baselines.
+- Evaluate model performance across seasons.
+- Document generation formulas, units, and aggregation rules.
+- Validate hydro storage capacity and energy calculations.
+- Verify role permissions within the underlying application logic.
+- Extend automated testing to generation calculations and storage transitions.
+- Add repository-specific installation and launch instructions.
